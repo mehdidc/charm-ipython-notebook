@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -ex
+HERE=$PWD
+. ${HERE}/hooks/common.sh
+
+apt-get update && apt-get upgrade -y -qq
+
+juju-log "installing prerequisites"
+apt-get install -y -qq python-pip python python-dev libcurl4-openssl-dev build-essential python-qt4
+
+juju-log "Adding some cool Machine Learning stuff"
+apt-get install -y -qq python-sklearn python-skimage cython
+
+juju-log "Installation of iPython notebook"
+apt-get install -y -qq python-matplotlib python-tornado ipython ipython-notebook python-scipy python-numpy python-pygments python-pandas
+pip install pyzmq
+
+juju-log "Installing auto start"
+sed -i s/PROFILE/${PROFILE}/g ${HERE}/data/${DEFAULT}
+sed -i s/CONFIG_FOLDER/${CONFIG_FOLDER}/g ${HERE}/data/${DEFAULT}
+
+ln -sf ${HERE}/data/${DEFAULT} /${DEFAULT}
+ln -sf ${HERE}/data/${INIT} /${INIT}
+chmod 0755 /${INIT}
+chown root:root /${INIT}
+update-rc.d ${APPNAME} defaults
+
+juju-log "Installation done. Moving to configuration"
+exit 0

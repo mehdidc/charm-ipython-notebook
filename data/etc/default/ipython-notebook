@@ -1,0 +1,9 @@
+# Set options
+DAEMON_ARGS="notebook --profile=PROFILE --ipython-dir=CONFIG_FOLDER"
+
+# Start on boot
+START=1
+
+# Set Virtual Env
+VIRTUALENV=""
+

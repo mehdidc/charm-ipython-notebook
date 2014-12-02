@@ -1,0 +1,33 @@
+# Overview
+
+This charms aims at deploying a iPython Notebook for Data Scientist and pythonistas to play with. 
+
+# Usage
+
+Once you have juju installed, 
+
+    juju deploy ipython-notebook
+    juju expose ipython-notebook
+
+
+You can then browse to https://ip-address. (don't forget the httpS)
+
+The default password is "secret" but you can change that in the configuration. 
+
+## Scale out Usage
+
+Obviously notebooks are useless to scale, unless used in a training environment. 
+
+## Known Limitations and Issues
+
+* Simple deployment and no fun options for now. 
+
+# Configuration
+
+* password: By default, "secret". Can be changed to anything not empty. If left empty, the default will apply.
+
+# Contact Information
+## Upstream Project Name
+
+- http://ipython.org/
+- Charm Maintainer: Samuel Cozannet <samnco@gmail.com>

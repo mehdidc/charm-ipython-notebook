@@ -1,0 +1,17 @@
+#!/bin/bash
+
+set -ex
+HERE=$PWD
+. ${HERE}/hooks/common.sh
+
+juju-log "Upgrading charm..."
+juju-log "Stopping service"
+${HERE}/hooks/stop
+
+juju-log "Reinstalling from scratch"
+${HERE}/hooks/install
+
+juju-log "Applying configuration"
+${HERE}/hooks/config-changed
+
+exit 0

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+set -ex 
+HERE=$PWD
+. ${HERE}/hooks/common.sh
+
+if [ `grep "DEFAULT_PASSWORD" ${CONFIG_FOLDER}/${CONFIG_FILE}` ] 
+then 
+ 	juju-log "No password set. Exiting"
+ 	exit 0 
+else 
+    juju-log "Restarting or Starting service..."
+        sudo -u ${USER} sudo service ${APPNAME} stop || echo "Not started yet"
+        sleep 3
+        sudo -u ${USER} sudo service ${APPNAME} start
+fi
+
+exit 0 

@@ -1,0 +1,6 @@
+options:
+  password:
+    type: string
+    default: "secret"
+    description: "Password to access the notebook"
+

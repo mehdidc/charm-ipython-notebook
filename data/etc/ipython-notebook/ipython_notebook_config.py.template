@@ -1,0 +1,26 @@
+# Configuration file for ipython.
+c = get_config()
+
+# This starts plotting support always with matplotlib
+c.IPKernelApp.pylab = 'inline'
+
+# You must give the path to the certificate file.
+c.NotebookApp.certfile = u'CONFIG_FOLDER/jujunotebook.pem'
+
+# Create your own password from the charm configuration
+c.NotebookApp.password = u'DEFAULT_PASSWORD'
+
+# Network and browser details. 
+# Change this to restrict the interface to call the server
+c.NotebookApp.ip = '*'
+c.NotebookApp.port = 443
+
+# We are on a server remember? No browser here...
+c.NotebookApp.open_browser = False
+
+# if you want a subfolder on the URL to access it then the below 3 lines need to be unhashed (and change the word "/ipython/" to "/WHATEVER-YOU-WANT/"
+# NOTE: dont forget that final / slash
+# NOTE: Dont use below if you think it will play with your webserver 
+# c.NotebookApp.base_project_url = '/ipython/'
+# c.NotebookApp.base_kernel_url = '/ipython/'
+# c.NotebookApp.webapp_settings = {'static_url_prefix':'/ipython/static/'}

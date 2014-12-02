@@ -1,0 +1,8 @@
+#!/bin/bash
+set -ex 
+HERE=$PWD
+. ${HERE}/hooks/common.sh
+
+sudo -u ${USER} sudo service ${APPNAME} stop
+
+exit  
