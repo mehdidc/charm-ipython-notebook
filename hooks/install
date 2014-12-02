@@ -18,7 +18,7 @@ pip install pyzmq
 
 juju-log "Installing auto start"
 sed -i s/PROFILE/${PROFILE}/g ${HERE}/data/${DEFAULT}
-sed -i "s|CONFIG_FOLDER|${CONFIG_FOLDER}|g" ${HERE}/data/${DEFAULT}
+sed -i "s|CONFIG_FOLDER|${IPYTHON}|g" ${HERE}/data/${DEFAULT}
 
 ln -sf ${HERE}/data/${DEFAULT} /${DEFAULT}
 ln -sf ${HERE}/data/${INIT} /${INIT}
