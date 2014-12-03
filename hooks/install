@@ -7,7 +7,7 @@ HERE=$PWD
 apt-get update && apt-get upgrade -y -qq
 
 juju-log "installing prerequisites"
-apt-get install -y -qq python-pip python python-dev libcurl4-openssl-dev build-essential python-qt4
+apt-get install -y -qq python-pip python python-dev libcurl4-openssl-dev build-essential python-qt4 python-rpy2 r-base
 
 juju-log "Adding some cool Machine Learning stuff"
 apt-get install -y -qq python-sklearn python-skimage cython
