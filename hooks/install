@@ -13,7 +13,7 @@ juju-log "Adding some cool Machine Learning stuff"
 apt-get install -y -qq python-sklearn python-skimage cython
 
 juju-log "Installation of iPython notebook"
-apt-get install -y -qq python-matplotlib python-tornado ipython ipython-notebook python-scipy python-numpy python-pygments python-pandas
+apt-get install -y -qq python-matplotlib python-tornado ipython ipython-notebook python-scipy python-numpy python-pygments python-pandas python-networkx
 pip install pyzmq pymongo hyperopt
 
 juju-log "Installing auto start"
