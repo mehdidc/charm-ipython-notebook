@@ -14,7 +14,7 @@ apt-get install -y -qq python-sklearn python-skimage cython
 
 juju-log "Installation of iPython notebook"
 apt-get install -y -qq python-matplotlib python-tornado ipython ipython-notebook python-scipy python-numpy python-pygments python-pandas
-pip install pyzmq
+pip install pyzmq pymongo hyperopt
 
 juju-log "Installing auto start"
 sed -i s/PROFILE/${PROFILE}/g ${HERE}/data/${DEFAULT}
