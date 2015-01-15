@@ -26,5 +26,9 @@ chmod 0755 /${INIT}
 chown root:root /${INIT}
 update-rc.d ${APPNAME} defaults
 
+juju-log "Now upgrading ipython & scikit-learn to the lastest versions"
+pip install -U ipython
+pip install -U scikit-learn
+
 juju-log "Installation done. Moving to configuration"
 exit 0
