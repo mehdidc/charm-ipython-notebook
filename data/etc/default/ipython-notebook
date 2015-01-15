@@ -1,5 +1,5 @@
 # Set options
-DAEMON_ARGS="notebook --profile=PROFILE --ipython-dir=CONFIG_FOLDER"
+DAEMON_ARGS="notebook --profile=PROFILE --ipython-dir=CONFIG_FOLDER --notebook-dir=HOMEPATH"
 
 # Start on boot
 START=1
