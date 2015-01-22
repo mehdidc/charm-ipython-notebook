@@ -15,6 +15,11 @@ DAEMON="ipython"
 USER="ubuntu"
 NAME="ipython-notebook"
 
+for file in `ls /etc/profile.d | grep notebook` 
+do
+    . /etc/profile.d/${file}
+done
+
 . /etc/default/ipython-notebook
 if [ "$START" = "0" ] ; then
 	echo "ipython-notebook is not configured to start"
