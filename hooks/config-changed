@@ -1,36 +1,36 @@
-#!/bin/bash
+# #!/bin/bash
 
-set -ex
-HERE=$PWD
-. ${HERE}/hooks/common.sh
+# set -ex
+# HERE=$PWD
+# . ${HERE}/hooks/common.sh
 
-${HERE}/hooks/stop || echo "Not started. Moving forward"
+# ${HERE}/hooks/stop || echo "Not started. Moving forward"
 
-juju-log "Setting password for Web GUI"
-NEW_PASSWORD=`config-get password`
-if [ "$NEW_PASSWORD" = "" ]; then
-        NEW_PASSWORD = "secret"
-        juju-log "Password cannot be empty. Using 'secret' as password"
-        # config-set password ${NEW_PASSWORD}
-fi
-PASSWORD=`python -c "import IPython;print IPython.lib.passwd(\"${NEW_PASSWORD}\")"`
+# juju-log "Setting password for Web GUI"
+# NEW_PASSWORD=`config-get password`
+# if [ "$NEW_PASSWORD" = "" ]; then
+#         NEW_PASSWORD = "secret"
+#         juju-log "Password cannot be empty. Using 'secret' as password"
+#         # config-set password ${NEW_PASSWORD}
+# fi
+# PASSWORD=`python -c "import IPython;print IPython.lib.passwd(\"${NEW_PASSWORD}\")"`
 
-juju-log "Creating new configuration"
-[ -d ${CONFIG_FOLDER} ] && rm -rf ${CONFIG_FOLDER}
-sudo -u ${USER} ipython profile create ${PROFILE}
-cp -f ${HERE}/data/etc/${APPNAME}/${CONFIG_FILE}.template ${CONFIG_FOLDER}/${CONFIG_FILE}
+# juju-log "Creating new configuration"
+# [ -d ${CONFIG_FOLDER} ] && rm -rf ${CONFIG_FOLDER}
+# sudo -u ${USER} ipython profile create ${PROFILE}
+# cp -f ${HERE}/data/etc/${APPNAME}/${CONFIG_FILE}.template ${CONFIG_FOLDER}/${CONFIG_FILE}
 
-sed -i "s|CONFIG_FOLDER|${CONFIG_FOLDER}|g" ${CONFIG_FOLDER}/${CONFIG_FILE}
-sed -i s/^c\.NotebookApp\.password.*/c\.NotebookApp\.password\ \=\ u\'"${PASSWORD}"\'/g ${CONFIG_FOLDER}/${CONFIG_FILE}
+# sed -i "s|CONFIG_FOLDER|${CONFIG_FOLDER}|g" ${CONFIG_FOLDER}/${CONFIG_FILE}
+# sed -i s/^c\.NotebookApp\.password.*/c\.NotebookApp\.password\ \=\ u\'"${PASSWORD}"\'/g ${CONFIG_FOLDER}/${CONFIG_FILE}
 
-juju-log "Creating SSL autosigned certificate"
-cd ${CONFIG_FOLDER}
-openssl req -new -newkey rsa:1024 -days 365 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=jujunotebook" -keyout jujunotebook.pem -out jujunotebook.pem
-cd -
+# juju-log "Creating SSL autosigned certificate"
+# cd ${CONFIG_FOLDER}
+# openssl req -new -newkey rsa:1024 -days 365 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=jujunotebook" -keyout jujunotebook.pem -out jujunotebook.pem
+# cd -
 
-## Opening HTTPS port ##
-open-port 443
+# ## Opening HTTPS port ##
+# open-port 443
 
-${HERE}/hooks/start
+# ${HERE}/hooks/start
 
-exit 0
+# exit 0
