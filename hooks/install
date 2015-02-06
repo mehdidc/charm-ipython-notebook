@@ -31,5 +31,9 @@ juju-log "Now upgrading ipython & scikit-learn to the lastest versions"
 pip install -U ipython
 pip install -U scikit-learn
 
+juju-log "Installing other dependencies"
+pip install -U flask
+pip install -U gitpython
+
 juju-log "Installation done. Moving to configuration"
 exit 0
