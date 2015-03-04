@@ -1,36 +1,39 @@
-# #!/bin/bash
+#!/bin/bash
 
-# set -ex
-# HERE=$PWD
-# . ${HERE}/hooks/common.sh
+set -ex
+HERE=$PWD
+. ${HERE}/hooks/common.sh
 
-# ${HERE}/hooks/stop || echo "Not started. Moving forward"
+apt-get update && apt-get upgrade -y -qq
 
-# juju-log "Setting password for Web GUI"
-# NEW_PASSWORD=`config-get password`
-# if [ "$NEW_PASSWORD" = "" ]; then
-#         NEW_PASSWORD = "secret"
-#         juju-log "Password cannot be empty. Using 'secret' as password"
-#         # config-set password ${NEW_PASSWORD}
-# fi
-# PASSWORD=`python -c "import IPython;print IPython.lib.passwd(\"${NEW_PASSWORD}\")"`
+juju-log "installing prerequisites"
+apt-get install -y -qq python-pip python python-dev libcurl4-openssl-dev build-essential python-qt4 python-rpy2 r-base
 
-# juju-log "Creating new configuration"
-# [ -d ${CONFIG_FOLDER} ] && rm -rf ${CONFIG_FOLDER}
-# sudo -u ${USER} ipython profile create ${PROFILE}
-# cp -f ${HERE}/data/etc/${APPNAME}/${CONFIG_FILE}.template ${CONFIG_FOLDER}/${CONFIG_FILE}
+juju-log "Adding some cool Machine Learning stuff"
+apt-get install -y -qq python-sklearn python-skimage cython
 
-# sed -i "s|CONFIG_FOLDER|${CONFIG_FOLDER}|g" ${CONFIG_FOLDER}/${CONFIG_FILE}
-# sed -i s/^c\.NotebookApp\.password.*/c\.NotebookApp\.password\ \=\ u\'"${PASSWORD}"\'/g ${CONFIG_FOLDER}/${CONFIG_FILE}
+juju-log "Installation of iPython notebook"
+apt-get install -y -qq python-matplotlib python-tornado ipython ipython-notebook python-scipy python-numpy python-pygments python-pandas python-networkx
+pip install pyzmq pymongo hyperopt
 
-# juju-log "Creating SSL autosigned certificate"
-# cd ${CONFIG_FOLDER}
-# openssl req -new -newkey rsa:1024 -days 365 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=jujunotebook" -keyout jujunotebook.pem -out jujunotebook.pem
-# cd -
+juju-log "Installing auto start"
+sed -i s/PROFILE/${PROFILE}/g ${HERE}/data/${DEFAULT}
+sed -i "s|CONFIG_FOLDER|${IPYTHON}|g" ${HERE}/data/${DEFAULT}
+sed -i "s|HOMEPATH|${HOMEPATH}|g" ${HERE}/data/${DEFAULT}
 
-# ## Opening HTTPS port ##
-# open-port 443
+ln -sf ${HERE}/data/${DEFAULT} /${DEFAULT}
+ln -sf ${HERE}/data/${INIT} /${INIT}
+chmod 0755 /${INIT}
+chown root:root /${INIT}
+update-rc.d ${APPNAME} defaults
 
-# ${HERE}/hooks/start
+juju-log "Now upgrading ipython & scikit-learn to the lastest versions"
+pip install -U ipython
+pip install -U scikit-learn
 
-# exit 0
+juju-log "Installing other dependencies"
+pip install -U flask
+pip install -U gitpython
+
+juju-log "Installation done. Moving to configuration"
+exit 0

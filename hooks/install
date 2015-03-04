@@ -15,6 +15,7 @@ apt-get install -y -qq python-sklearn python-skimage cython
 juju-log "Installation of iPython notebook"
 apt-get install -y -qq python-matplotlib python-tornado ipython ipython-notebook python-scipy python-numpy python-pygments python-pandas python-networkx
 pip install pyzmq pymongo hyperopt
+pip install jsonschema
 
 juju-log "Installing auto start"
 sed -i s/PROFILE/${PROFILE}/g ${HERE}/data/${DEFAULT}
@@ -30,6 +31,7 @@ update-rc.d ${APPNAME} defaults
 juju-log "Now upgrading ipython & scikit-learn to the lastest versions"
 pip install -U ipython
 pip install -U scikit-learn
+pip install -U tornado
 
 juju-log "Installing other dependencies"
 pip install -U flask
