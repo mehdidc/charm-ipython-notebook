@@ -16,6 +16,10 @@ juju-log "Installation of iPython notebook"
 apt-get install -y -qq python-matplotlib python-tornado ipython ipython-notebook python-scipy python-numpy python-pygments python-pandas python-networkx
 pip install pyzmq pymongo hyperopt
 
+
+
+
+
 juju-log "Installing auto start"
 sed -i s/PROFILE/${PROFILE}/g ${HERE}/data/${DEFAULT}
 sed -i "s|CONFIG_FOLDER|${IPYTHON}|g" ${HERE}/data/${DEFAULT}
@@ -36,4 +40,29 @@ pip install -U flask
 pip install -U gitpython
 
 juju-log "Installation done. Moving to configuration"
+
+
+${HERE}/hooks/stop || echo "Not started. Moving forward"
+
+# juju-log "Setting password for Web GUI"
+NEW_PASSWORD=`config-get password`
+if [ "$NEW_PASSWORD" = "" ]; then
+     NEW_PASSWORD = "secret"
+     juju-log "Password cannot be empty. Using 'secret' as password"
+    config-set password ${NEW_PASSWORD}
+fi
+PASSWORD=`python -c "import IPython;print IPython.lib.passwd(\"${NEW_PASSWORD}\")"`
+
+juju-log "Creating new configuration"
+[ -d ${CONFIG_FOLDER} ] && rm -rf ${CONFIG_FOLDER}
+sudo -u ${USER} ipython profile create ${PROFILE}
+cp -f ${HERE}/data/etc/${APPNAME}/${CONFIG_FILE}.template ${CONFIG_FOLDER}/${CONFIG_FILE}
+
+sed -i "s|CONFIG_FOLDER|${CONFIG_FOLDER}|g" ${CONFIG_FOLDER}/${CONFIG_FILE}
+sed -i s/^c\.NotebookApp\.password.*/c\.NotebookApp\.password\ \=\ u\'"${PASSWORD}"\'/g ${CONFIG_FOLDER}/${CONFIG_FILE}
+
+juju-log "Creating SSL autosigned certificate"
+cd ${CONFIG_FOLDER}
+openssl req -new -newkey rsa:1024 -days 365 -nodes -x509 -subj "/C=US/ST=Denial/L=Springfield/O=Dis/CN=jujunotebook" -keyout jujunotebook.pem -out jujunotebook.pem
+cd -
 exit 0
